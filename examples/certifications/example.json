@@ -1,0 +1,32 @@
+{
+  "_comment": "EXAMPLE ONLY — not a real certification. All fields are illustrative.",
+  "uuid": "00000000-0000-0000-0000-000000000000",
+  "tool_id": "00000000-0000-0000-0000-000000000000",
+  "certification": {
+    "standard": "iLEAP Technical Specifications",
+    "standard_version": "1.0.0",
+    "date": "2026-01-01",
+    "valid_until": "2027-01-01",
+    "outcome": "Passed",
+    "data_transactions": [
+      { "id": "DT1", "status": "tested" },
+      { "id": "DT2", "status": "tested" },
+      { "id": "DT3", "status": "not_tested" },
+      { "id": "DT4", "status": "out_of_scope" }
+    ]
+  },
+  "test_evidence": {
+    "act_run_id": "00000000-0000-0000-0000-000000000000",
+    "act_timestamp": "2026-01-01T00:00:00Z",
+    "basepath": "https://api.example.com/ileap",
+    "pact_run_id": "00000000-0000-0000-0000-000000000000",
+    "exceptions": [
+      {
+        "tc_id": "ileap-tc-008",
+        "title": "iLEAP Test Case 008: Attempt TransportActivityData with Expired Token",
+        "outcome": "Skipped",
+        "rationale": "Example rationale: no pre-expired token was available at the time of testing. In a real certification record this field must contain a substantive justification."
+      }
+    ]
+  }
+}

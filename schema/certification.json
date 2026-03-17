@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/sine-fdn/ileap-certified/main/schema/certification.json",
+  "title": "iLEAP Certification Record",
+  "description": "An immutable iLEAP certification record issued when a tool passes the iLEAP conformance testing process.",
+  "type": "object",
+  "required": ["uuid", "tool_id", "certification", "test_evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Globally unique identifier for this certification record (UUID v4). Used as the filename."
+    },
+    "tool_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID of the tool being certified. Must match the 'uuid' field in the corresponding tool record (tools/{tool_id}.json)."
+    },
+    "certification": {
+      "type": "object",
+      "description": "Details of the iLEAP certification granted.",
+      "required": ["standard", "standard_version", "date", "valid_until", "outcome", "data_transactions"],
+      "additionalProperties": false,
+      "properties": {
+        "standard": {
+          "type": "string",
+          "const": "iLEAP Technical Specifications",
+          "description": "The standard against which the tool was certified."
+        },
+        "standard_version": {
+          "type": "string",
+          "description": "Version of the iLEAP Technical Specifications (e.g., '1.0.0')."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date when certification was granted."
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date until which this certification is valid (1 year from certification date). Also conditional on the provider's SFC Certification being renewed — see the tool record."
+        },
+        "outcome": {
+          "type": "string",
+          "const": "Passed",
+          "description": "Overall certification outcome. Always 'Passed' — failed attempts are not recorded in this registry."
+        },
+        "data_transactions": {
+          "type": "array",
+          "description": "iLEAP Data Transactions and their status in the test run. DT1 and DT2 are mandatory and must be 'tested'. DT3 is optional. DT4 is currently out of scope.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": ["DT1", "DT2", "DT3", "DT4"],
+                "description": "Data Transaction identifier."
+              },
+              "status": {
+                "type": "string",
+                "enum": ["tested", "not_tested", "out_of_scope"],
+                "description": "'tested': included in the test run and passed. 'not_tested': applicable but not tested (valid for optional DTs only). 'out_of_scope': not applicable to this certification."
+              }
+            }
+          },
+          "allOf": [
+            {
+              "contains": {
+                "properties": {
+                  "id": { "const": "DT1" },
+                  "status": { "const": "tested" }
+                },
+                "required": ["id", "status"]
+              }
+            },
+            {
+              "contains": {
+                "properties": {
+                  "id": { "const": "DT2" },
+                  "status": { "const": "tested" }
+                },
+                "required": ["id", "status"]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "test_evidence": {
+      "type": "object",
+      "description": "References to the conformance test runs that evidence this certification.",
+      "required": ["act_run_id", "act_timestamp", "basepath"],
+      "additionalProperties": false,
+      "properties": {
+        "act_run_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "UUID of the iLEAP ACT (Automated Conformance Testing) run, as stored in the ACT database."
+        },
+        "act_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the ACT test run was performed."
+        },
+        "basepath": {
+          "type": "string",
+          "format": "uri",
+          "description": "Base URL of the API endpoint that was tested."
+        },
+        "pact_run_id": {
+          "type": "string",
+          "description": "UUID of the PACT Conformance Service test run (from the PACT service response)."
+        },
+        "exceptions": {
+          "type": "array",
+          "description": "Test cases that did not succeed (Skipped, Failed, or InternalError), each with a rationale explaining why this does not prevent certification. Omitted when all tests passed.",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["tc_id", "title", "outcome", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "tc_id": {
+                "type": "string",
+                "description": "Test case identifier (e.g., 'ileap-tc-008', 'TESTCASE#12')."
+              },
+              "title": {
+                "type": "string",
+                "description": "Human-readable test case title."
+              },
+              "outcome": {
+                "type": "string",
+                "enum": ["Failed", "Skipped", "InternalError"],
+                "description": "Test case outcome."
+              },
+              "rationale": {
+                "type": "string",
+                "description": "Explanation of why this non-passing result does not prevent certification."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
