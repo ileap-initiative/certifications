@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/sine-fdn/ileap-certified/main/schema/tool.json",
+  "title": "iLEAP Tool Record",
+  "description": "A record registering a tool and its provider in the iLEAP certification registry.",
+  "type": "object",
+  "required": ["uuid", "provider", "software"],
+  "additionalProperties": false,
+  "properties": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Globally unique identifier for this tool record (UUID v4). Used as the filename and referenced by certification records."
+    },
+    "provider": {
+      "type": "object",
+      "description": "The company that develops and maintains this tool.",
+      "required": ["name", "contact_name", "contact_email"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Legal name of the tool provider company."
+        },
+        "contact_name": {
+          "type": "string",
+          "description": "Name of the primary contact person at the tool provider."
+        },
+        "contact_email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email of the primary contact person."
+        },
+        "sfc_certificate_number": {
+          "type": "string",
+          "description": "SFC Certificate Number (e.g., 'SFC CRT 008'). Prerequisite for iLEAP certification."
+        },
+        "sfc_certification_renewal_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date by which the provider's SFC Certification must be renewed."
+        }
+      }
+    },
+    "software": {
+      "type": "object",
+      "description": "The software being registered.",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the software."
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of the software."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of the software's homepage or documentation."
+        }
+      }
+    }
+  }
+}

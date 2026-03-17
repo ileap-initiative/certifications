@@ -1,0 +1,16 @@
+{
+  "_comment": "EXAMPLE ONLY — not a real tool record. All fields are illustrative.",
+  "uuid": "00000000-0000-0000-0000-000000000000",
+  "provider": {
+    "name": "Example Tool Provider Ltd.",
+    "contact_name": "Jane Smith",
+    "contact_email": "jane.smith@example.com",
+    "sfc_certificate_number": "SFC CRT 000",
+    "sfc_certification_renewal_date": "2027-01-01"
+  },
+  "software": {
+    "name": "Example Freight Emissions Calculator",
+    "description": "A tool for calculating freight transport emissions in accordance with the iLEAP Technical Specifications.",
+    "url": "https://example.com/freight-calculator"
+  }
+}
