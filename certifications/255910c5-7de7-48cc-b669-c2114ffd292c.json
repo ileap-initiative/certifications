@@ -1,0 +1,37 @@
+{
+  "uuid": "255910c5-7de7-48cc-b669-c2114ffd292c",
+  "tool_id": "db9b9cea-253f-4f65-99c4-1b744c703f3e",
+  "certification": {
+    "standard": "iLEAP Technical Specifications",
+    "standard_version": "1.0.0",
+    "date": "2026-03-18",
+    "valid_until": "2027-03-18",
+    "outcome": "Passed",
+    "data_transactions": [
+      { "id": "DT1", "status": "tested" },
+      { "id": "DT2", "status": "tested" },
+      { "id": "DT3", "status": "tested" },
+      { "id": "DT4", "status": "out_of_scope" }
+    ]
+  },
+  "test_evidence": {
+    "act_run_id": "b9a06330-b60a-4a56-b269-23b1220e163c",
+    "act_timestamp": "2026-03-20T10:35:21.702391Z",
+    "basepath": "https://ileap.way.cloud/",
+    "pact_run_id": "4ffd7879-4623-4a16-9988-91142bc10153",
+    "exceptions": [
+      {
+        "tc_id": "pact-tc-013",
+        "title": "PACT Test Case 13: Received Request Fulfilled Response",
+        "outcome": "Skipped",
+        "rationale": "Since Action Events are optional in PACT v2.2, skipping this test does not prevent iLEAP certification."
+      },
+      {
+        "tc_id": "pact-tc-014.B",
+        "title": "PACT Test Case 14.B: Received Request Rejected Response",
+        "outcome": "Skipped",
+        "rationale": "Since Action Events are optional in PACT v2.2, skipping this test does not prevent iLEAP certification."
+      }
+    ]
+  }
+}
