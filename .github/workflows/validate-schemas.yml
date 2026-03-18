@@ -23,8 +23,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install AJV CLI
-        run: npm install -g ajv-cli ajv
+      - name: Install AJV and AJV Formats
+        run: npm install -g ajv ajv-formats
 
       - name: Get changed files
         id: changed-files
@@ -42,13 +42,13 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == certifications/*.json ]]; then
               echo "Validating certification: $file"
-              ajv validate -s schema/certification.json -d "$file" || EXIT_CODE=$?
+              ajv validate -s schema/certification.json -d "$file" --spec=draft2020 -c ajv-formats || EXIT_CODE=$?
             elif [[ $file == revocations/*.json ]]; then
               echo "Validating revocation: $file"
-              ajv validate -s schema/revocation.json -d "$file" || EXIT_CODE=$?
+              ajv validate -s schema/revocation.json -d "$file" --spec=draft2020 -c ajv-formats || EXIT_CODE=$?
             elif [[ $file == tools/*.json ]]; then
               echo "Validating tool: $file"
-              ajv validate -s schema/tool.json -d "$file" || EXIT_CODE=$?
+              ajv validate -s schema/tool.json -d "$file" --spec=draft2020 -c ajv-formats || EXIT_CODE=$?
             fi
           done
           exit $EXIT_CODE

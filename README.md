@@ -21,13 +21,26 @@ examples/          Annotated example files (one per record type)
 
 ---
 
+## Tools
+
+Before a certification can be added to this catalog, the tool being certified must have a record in `tools/`. Files are named `<uuid>.json`, where the UUID is assigned when the tool is first registered.
+
+A tool record contains:
+- **`uuid`** — unique identifier for this tool record; used as the filename and referenced by certification records
+- **`provider`** — the company developing and maintaining the tool, including optional SFC Certificate Number and renewal date
+- **`software`** — the software being registered: name, optional description, and optional URL
+
+See `examples/tools/example.json` for a fully annotated example.
+
+---
+
 ## Certifications
 
-Each file in `certifications/` represents a certification that was granted to a tool provider. Files are named `<provider-slug>-<date>.json` (e.g., `emisia-2026-03-05.json`).
+Each file in `certifications/` represents a certification that was granted to a tool. Files are named `<uuid>.json`, where the UUID is the certification's own unique identifier (not the tool UUID).
 
 A certification record contains:
-- **`uuid`** — globally unique identifier for this record
-- **`provider`** — tool provider details, including their SFC Certificate Number
+- **`uuid`** — unique identifier for this certification record; used as the filename
+- **`tool_id`** — UUID of the tool being certified; must match the `uuid` of a record in `tools/`
 - **`certification`** — [iLEAP Technical Specifications](https://specs.ileap.global) standard, version, date, validity, and Data Transaction coverage
 - **`test_evidence`** — references to the ACT and PACT conformance test runs that evidence the certification, including any exceptions (skipped or non-blocking test cases) with rationale
 
@@ -54,9 +67,9 @@ A certification is valid for 1 year from its `certification.date`, provided the 
 
 Certifications can become invalid before their `valid_until` date — for example if a provider's SFC Certification lapses, if their implementation is found to no longer conform, or if they voluntarily withdraw. When this happens, a revocation record is added to `revocations/` rather than modifying or deleting the original certification. This preserves a complete, auditable history of all certifications ever granted and the reasons they were ended.
 
-Files in `revocations/` are named `<provider-slug>-<revocation-date>.json` (e.g., `revocations/emisia-2026-09-15.json`). The original certification file is never modified.
+Files in `revocations/` are named `<uuid>.json`, where the UUID is the revocation's own unique identifier. The original certification file is never modified.
 
-A revocation record references the certification being revoked by its `uuid` and `filepath`, and includes the revocation date, reason, and optional notes.
+A revocation record contains its own `uuid`, references the certification being revoked via `certification_id`, and includes the revocation date, reason, and optional notes.
 
 Possible revocation reasons: `sfc_cert_lapsed` · `conformance_lost` · `voluntary_withdrawal` · `administrative`
 
@@ -68,34 +81,21 @@ See `examples/revocations/example.json` for a fully annotated example.
 
 A certification in `certifications/` is currently valid if **all** of the following hold:
 
-1. No matching file exists in `revocations/`
+1. No file exists in `revocations/` with a matching `certification_id`
 2. Today's date is before `certification.valid_until`
-3. The provider's SFC Certification has been renewed (check `provider.sfc_certification_renewal_date`)
-
----
-
-## Adding a new certification
-
-1. Run the iLEAP ACT tool against the provider's API with the `--certification` flag
-2. Obtain the ACT run UUID from the database and the PACT run ID from the ACT output
-3. Create a new JSON file in `certifications/` following the naming convention and validated against `schema/certification.json`
-4. Open a pull request — a member of the iLEAP team will review and merge
-
-## Revoking a certification
-
-1. Create a new JSON file in `revocations/` with the same filename as the certification being revoked
-2. Populate `uuid`, `filepath`, `revocation_date`, `reason`, and optionally `notes`
-3. Open a pull request
+3. The provider's SFC Certification has been renewed (check `provider.sfc_certification_renewal_date` in the tool record)
 
 ---
 
 ## Schema validation
 
-Both schemas are in `schema/` and follow [JSON Schema draft 2020-12](https://json-schema.org/draft/2020-12/schema).
+All schemas are in `schema/` and follow [JSON Schema draft 2020-12](https://json-schema.org/draft/2020-12/schema).
 
-To validate a file locally using [ajv-cli](https://github.com/ajv-validator/ajv-cli):
+To validate a file locally using [ajv](https://github.com/ajv-validator/ajv):
 
 ```sh
-npx ajv-cli validate -s schema/certification.json -d certifications/emisia-2026-03-05.json
-npx ajv-cli validate -s schema/revocation.json -d revocations/emisia-2026-03-05.json
+npm install ajv ajv-formats
+ajv validate -s schema/tool.json -d tools/<uuid>.json --spec=draft2020 -c ajv-formats
+ajv validate -s schema/certification.json -d certifications/<uuid>.json --spec=draft2020 -c ajv-formats
+ajv validate -s schema/revocation.json -d revocations/<uuid>.json --spec=draft2020 -c ajv-formats
 ```
