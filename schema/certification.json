@@ -71,6 +71,7 @@
           "allOf": [
             {
               "contains": {
+                "type": "object",
                 "properties": {
                   "id": { "const": "DT1" },
                   "status": { "const": "tested" }
@@ -80,6 +81,7 @@
             },
             {
               "contains": {
+                "type": "object",
                 "properties": {
                   "id": { "const": "DT2" },
                   "status": { "const": "tested" }
