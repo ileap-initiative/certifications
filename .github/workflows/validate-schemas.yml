@@ -24,7 +24,7 @@ jobs:
           node-version: '20'
 
       - name: Install AJV and AJV Formats
-        run: npm install -g ajv ajv-formats
+        run: npm install -g ajv-cli ajv-formats
 
       - name: Get changed files
         id: changed-files
