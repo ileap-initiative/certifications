@@ -1,0 +1,14 @@
+{
+  "uuid": "1ddb959b-9a46-48d7-a104-4f4b697e7c04",
+  "provider": {
+    "name": "E:misia SA",
+    "contact_name": "Michail Perdikopoulos",
+    "contact_email": "michalis.p@emisia.com",
+    "sfc_certificate_number": "SFC CRT 008",
+    "sfc_certification_renewal_date": "2026-09-01"
+  },
+  "software": {
+    "name": "e:misia GreenLight",
+    "url": "https://www.emisia.com/"
+  }
+}
