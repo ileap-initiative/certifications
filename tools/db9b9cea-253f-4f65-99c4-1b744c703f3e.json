@@ -1,0 +1,15 @@
+{
+  "uuid": "db9b9cea-253f-4f65-99c4-1b744c703f3e",
+  "provider": {
+    "name": "Way Data Technologies Oy",
+    "contact_name": "Oscar Söderlund",
+    "contact_email": "oscar@way.cloud",
+    "sfc_certificate_number": "SFC CRT 019",
+    "sfc_certification_renewal_date": "2026-12-10"
+  },
+  "software": {
+    "description": "AI-powered Fleet Management and Analytics for the natively connected vehicle fleets",
+    "name": "Way",
+    "url": "https://www.way.cloud/"
+  }
+}
