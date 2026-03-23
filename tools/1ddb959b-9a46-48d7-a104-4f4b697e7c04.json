@@ -9,6 +9,7 @@
   },
   "software": {
     "name": "e:misia GreenLight",
-    "url": "https://www.emisia.com/"
+    "url": "https://www.emisia.com/",
+    "description": "GreenLight is a predictive analytics API designed to enhance logistics platforms like TMS, FMS, and routing solutions by providing highly accurate, physics-based calculations for energy consumption, payload impact, and CO₂ emissions"
   }
 }
